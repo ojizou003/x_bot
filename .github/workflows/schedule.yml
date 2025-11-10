@@ -1,0 +1,57 @@
+name: X Morning Bot
+
+on:
+  schedule:
+    # 日本時間の毎朝5:00 = UTC時間の前日20:00 (JST = UTC+9)
+    - cron: '0 20 * * *'
+  workflow_dispatch: # 手動実行も可能にする
+
+jobs:
+  post-to-x:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        
+    - name: Install Chrome
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y google-chrome-stable
+        
+    - name: Install ChromeDriver
+      run: |
+        CHROME_VERSION=$(google-chrome --version | awk '{print $3}' | cut -d. -f1)
+        CHROMEDRIVER_VERSION=$(curl -s "https://googlechromelabs.github.io/chrome-for-testing/LATEST_RELEASE_${CHROME_VERSION}")
+        wget -O /tmp/chromedriver.zip "https://storage.googleapis.com/chrome-for-testing-public/${CHROMEDRIVER_VERSION}/linux64/chromedriver-linux64.zip"
+        unzip /tmp/chromedriver.zip -d /tmp/
+        sudo mv /tmp/chromedriver-linux64/chromedriver /usr/local/bin/chromedriver
+        sudo chmod +x /usr/local/bin/chromedriver
+        
+    - name: Decode cookies.pkl from secrets
+      run: |
+        echo "${{ secrets.COOKIES_PKL }}" | base64 -d > cookies.pkl
+        
+    - name: Run X Morning Bot
+      run: |
+        python X_morning_bot.py
+        
+    - name: Upload logs on failure
+      if: failure()
+      uses: actions/upload-artifact@v4
+      with:
+        name: error-logs
+        path: |
+          cookies.pkl
+        if-no-files-found: ignore
+
