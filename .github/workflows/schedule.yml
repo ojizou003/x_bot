@@ -2,8 +2,8 @@ name: X Morning Bot
 
 on:
   schedule:
-    # 日本時間の毎朝5:00 = UTC時間の前日20:00 (JST = UTC+9)
-    - cron: '0 20 * * *'
+    # 日本時間の毎朝4:50 = UTC時間の前日19:50 (JST = UTC+9)
+    - cron: '50 19 * * *'
   workflow_dispatch: # 手動実行も可能にする
 
 jobs:
