@@ -44,6 +44,7 @@ X.implicitly_wait(10)
 for cookie in cookies:
     X.add_cookie(cookie)
 X.get(X_url)
+sleep(5)
 # ポストの作成
 post = f'おはようございます\u266a\n{today}、今日の熊本市は{weather}。\n最高気温{high}、最低気温{low}の予報です。\n{text}\n本日もよろしくお願いします\u263a\n{link}'
 # ポストの入力
