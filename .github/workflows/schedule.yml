@@ -4,7 +4,7 @@ on:
   schedule:
     # 日本時間の毎朝4:50 = UTC時間の前日19:50 (JST = UTC+9)
     - cron: "50 19 * * *"
-  workflow_dispatch: # 手動実行も可能にする
+  workflow_dispatch:
 
 jobs:
   post-to-x:
@@ -43,9 +43,27 @@ jobs:
         run: |
           echo "${{ secrets.COOKIES_PKL }}" | base64 -d > cookies.pkl
 
-      - name: Run X Morning Bot
+      # ==========================================
+      # 🔥 リトライ付き実行（最大5回）
+      # ==========================================
+      - name: Run X Morning Bot with retry
         run: |
-          python X_morning_bot.py
+          max_retry=5
+          count=1
+
+          until python X_morning_bot.py; do
+            echo "❌ Failed attempt $count/$max_retry"
+            if [ $count -ge $max_retry ]; then
+              echo "❌ All $max_retry attempts failed. Exiting."
+              exit 1
+            fi
+
+            echo "⏳ Retrying in 10 seconds..."
+            count=$((count+1))
+            sleep 10
+          done
+
+          echo "✅ Python script succeeded!"
 
       - name: Upload logs on failure
         if: failure()
