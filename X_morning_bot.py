@@ -51,7 +51,7 @@ post = f'おはようございます\u266a\n{today}、今日の熊本市は{weat
 X.find_element(By.CLASS_NAME, 'public-DraftStyleDefault-block.public-DraftStyleDefault-ltr').send_keys(post)
 sleep(5)
 # ポストの投稿
-X.find_element(By.CSS_SELECTOR, 'button.css-175oi2r.r-sdzlij.r-1phboty.r-rs99b7.r-lrvibr.r-1cwvpvk.r-2yi16.r-1qi8awa.r-3pj75a.r-1loqt21.r-o7ynqc.r-6416eg.r-1ny4l3l').click()
+X.find_element(By.XPATH, '//*[@id="react-root"]/div/div/div[2]/main/div/div/div/div[1]/div/div[3]/div/div[2]/div[1]/div/div/div/div[2]/div[2]/div[2]/div/div/div/div[3]/button/div/div/span/span').click()
 sleep(5)
 
 X.quit()
