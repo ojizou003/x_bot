@@ -16,6 +16,11 @@ weather_url = 'https://weather.yahoo.co.jp/weather/jp/43/8610.html'
 X_url = 'https://x.com'
 
 options = Options()
+options.add_argument(
+    "--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+    "AppleWebKit/537.36 (KHTML, like Gecko) "
+    "Chrome/139.0.0.0 Safari/537.36"
+)
 options.add_argument("--headless")
 # service = Service('C:/auto/chromedriver.exe')
 # driver_path = ChromeDriverManager().install()
