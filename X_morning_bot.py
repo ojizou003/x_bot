@@ -48,17 +48,7 @@ sleep(5)
 # ポストの作成
 post = f'おはようございます\u266a\n{today}、今日の熊本市は{weather}。\n最高気温{high}、最低気温{low}の予報です。\n{text}\n本日もよろしくお願いします\u263a\n{link}'
 # ポストの入力
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-
-textbox = WebDriverWait(X, 30).until(
-    EC.element_to_be_clickable(
-        (By.CSS_SELECTOR, '[contenteditable="true"][role="textbox"]')
-    )
-)
-
-textbox.send_keys(post)
-# X.find_element(By.CSS_SELECTOR, '.public-DraftStyleDefault-block.public-DraftStyleDefault-ltr').send_keys(post)
+X.find_element(By.CLASS_NAME, 'public-DraftStyleDefault-block.public-DraftStyleDefault-ltr').send_keys(post)
 sleep(5)
 # ポストの投稿
 X.find_element(By.XPATH, '//*[@id="react-root"]/div/div/div[2]/main/div/div/div/div[1]/div/div[3]/div/div[2]/div[1]/div/div/div/div[2]/div[2]/div[2]/div/div/div/div[3]/button/div/div/span/span').click()
